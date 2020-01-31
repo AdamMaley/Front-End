@@ -1,14 +1,14 @@
 import React from 'react'
 import { withFormik, Form, Field } from 'formik';
-import Yup from 'yup';
-import Axios from 'axios';
+import * as Yup from "yup";
+import axios from 'axios';
 
 function LoginForm({ values, errors, touched, isSubmitting }) {
     return (
         <Form>
             <div>
-                {touched.email && errors.email && <p>{errors.email}</p>}
-                <Field type="email" name="email" placeholder="Email" />
+                {touched.username && errors.username && <p>{errors.username}</p>}
+                <Field type="text" name="username" placeholder="Username" />
             </div>
             <div>
                 {touched.password && errors.password && <p>{errors.password}</p>}
@@ -23,24 +23,24 @@ function LoginForm({ values, errors, touched, isSubmitting }) {
     );
 }
 
-const FormikLoginForm = withFormik({mapPropsToValues({ email, passowrd, tos }) {
+const FormikLoginForm = withFormik({mapPropsToValues({ email, password, tos }) {
     return {
-        email:email || "",
+        username:username || "",
         password: password || "",
         tos: tos || false
     };
 },
     validationSchema: Yup.object().shape({
         email: Yup.string()
-            .email("Email is not valid")
-            .required("Email is required"),
+            .email("Username is not valid")
+            .required("Username is required"),
         password: Yup.string()
             .min(10, "Password must be 10 chracters or longer")
             .required("Password is required")
     }),
     handleSubmit(values, { resetForm, setErrors, setSubmitting }) {
-        if (values.email === "alreadytaken@atb.dev") {
-            setErrors({ email: "That email is already taken" });
+        if (values.username === "alreadytaken@atb.dev") {
+            setErrors({ email: "That username is already taken" });
     } else {
         axios
             .post("https://INSERT-HERE.com",values)
@@ -57,5 +57,5 @@ const FormikLoginForm = withFormik({mapPropsToValues({ email, passowrd, tos }) {
     }
 })(LoginForm);
 
-export default LoginForm;
+
 export default FormikLoginForm;
